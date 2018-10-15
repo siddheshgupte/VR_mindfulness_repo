@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ChangeScene : MonoBehaviour {
 
@@ -10,6 +11,8 @@ public class ChangeScene : MonoBehaviour {
 
     List<string> sceneList;
     int currentSceneIndex = 0;
+
+    public Button changeSceneButton;
     #endregion
 
     private void Awake()
@@ -39,6 +42,14 @@ public class ChangeScene : MonoBehaviour {
         }
         #endregion
 
+        //Assign next scene name to the button
+        changeSceneButton.GetComponentInChildren<Text>().text =
+            sceneList[(currentSceneIndex + 1) % sceneList.Count];
+
+        foreach(var scene in sceneList)
+        {
+            Debug.Log(scene);
+        }
     }
 
     // Update is called once per frame
@@ -46,14 +57,24 @@ public class ChangeScene : MonoBehaviour {
 
         #region SceneChange Logic
         if (Input.GetKeyDown(KeyCode.E)){
-
-            int nextSceneIndex = (currentSceneIndex + 1) % sceneList.Count;
-
-            SceneManager.LoadScene(nextSceneIndex);
-
-            currentSceneIndex = nextSceneIndex;
+           
+            NextScene();
         }
         #endregion
+
+    }
+
+    public void NextScene()
+    {
+        int nextSceneIndex = (currentSceneIndex + 1) % sceneList.Count;
+
+        SceneManager.LoadScene(nextSceneIndex);
+
+        currentSceneIndex = nextSceneIndex;
+
+        //Assign next scene name to the button
+        changeSceneButton.GetComponentInChildren<Text>().text =
+            sceneList[(currentSceneIndex + 1) % sceneList.Count];
 
     }
 }
